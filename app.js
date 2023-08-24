@@ -2,7 +2,9 @@ const express = require('express');
 const app = express();
 const bodyParser= require('body-parser')
 const mongoose = require('mongoose');
-const Thing = require('./models/Thing')
+const Thing = require('./models/Thing');
+const stuffRoutes = require('./routes/stuff');
+const userRoutes = require('./routes/user');
 
 mongoose.connect('mongodb+srv://YuKKKK:tianyu12@cluster0.qa9uqy9.mongodb.net/',
   { useNewUrlParser: true,
@@ -19,7 +21,7 @@ app.use((req, res, next) => {
     next();
   });
 app.use(bodyParser.json());
-app.post('/api/stuff',(req,res,next)=>{
+/* app.post('/api/stuff',(req,res,next)=>{
     console.log("post",req.body._id)
     delete req.body._id;
     const thing = new Thing({
@@ -48,5 +50,10 @@ app.get('/api/stuff', (req, res, next) => {
           .then(things => res.status(200).json(things))
           .catch(error => res.status(400).json({ error }));
  
-  });
+  }); */
+
+app.use('/api/stuff',stuffRoutes);
+app.use('/api/auth',userRoutes);
+
+
 module.exports = app;
